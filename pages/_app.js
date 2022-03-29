@@ -5,6 +5,7 @@ import {CartContext} from '../context/ContextProvider'
 import Cart from '../components/Cart/Cart'
 import { client } from "../apollo-client"
 import { gql } from '@apollo/client'
+import Link from "next/link"
 
 
 
