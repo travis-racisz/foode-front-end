@@ -55,7 +55,7 @@ function MyApp({
   return ( 
     <SessionProvider session = {session}>
       <CartContext.Provider value={ { cart, addToCart, removeFromCart, submitOrder, session } }>
-        <a href = "/">Home</a>
+        <Link href = "/">Home</Link>
         <Component {...pageProps} />
         <Cart />
       </CartContext.Provider>
