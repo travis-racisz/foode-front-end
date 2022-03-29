@@ -1,7 +1,7 @@
 import React from 'react'
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { CartContext } from "../../context/ContextProvider"
-export default function menus(props){ 
+export default function Menus(props){ 
     const {data} = props
     const [ showMenu, setShowMenu ] = useState(false)
     const { addToCart } = useContext(CartContext)
