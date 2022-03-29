@@ -7,6 +7,6 @@ import {
 
   
   export const client = new ApolloClient({ 
-    uri: "http://localhost:8174/graphql", 
+    uri: "https://foode-backend.herokuapp.com/graphql", 
     cache: new InMemoryCache(), 
   })
