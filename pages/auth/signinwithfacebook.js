@@ -3,7 +3,7 @@ import Link from "next/link"
 import { useEffect } from 'react'
 
 
-export default function signInWithFacebook(){
+export default function SignInWithFacebook(){
     const {data: session, status} = useSession()
     console.log(session)
     console.log(status)
