@@ -7,9 +7,6 @@ export default function SignInWithFacebook(){
     const {data: session, status} = useSession()
     console.log(session)
     console.log(status)
-    useEffect(() => { 
-        console.log(session)
-    }, [session])
     if(session){ 
         console.log(session, "session")
         return ( 
