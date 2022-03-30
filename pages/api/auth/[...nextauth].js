@@ -37,8 +37,8 @@ export default NextAuth({
           return session
       }
   },
-  // pages: { 
-  //     newUser: '/auth/registration', 
-  //     signIn: "/auth/signinwithfacebook"
-  // }
+  pages: { 
+      newUser: '/auth/registration', 
+      signIn: "/auth/signinwithfacebook"
+  }
 })
