@@ -8,6 +8,7 @@ export default function Restaurant({data}){
     console.log(data.resturaunt) 
     const router = useRouter()
     const {id} = router.query
+    console.log(data)
     
     return ( 
         <div> 
@@ -29,7 +30,6 @@ export default function Restaurant({data}){
 }
 
 export async function getStaticProps(context){ 
-    console.log(typeof parseInt(context.params.id))
     const query = gql` 
     query Resturaunt($resturauntId: Int) {
         resturaunt(id: $resturauntId) {

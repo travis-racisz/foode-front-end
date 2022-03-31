@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 
 export default function AllResturaunts({ data }){ 
+    console.log(data)
     return( 
         <div> 
             <h1>All Restaurants</h1>

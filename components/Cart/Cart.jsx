@@ -10,10 +10,10 @@ export default function Cart(props){
    const [showCart, setShowCart] = useState(false)
 
    useEffect(() => {
-       if(cart.length > 0){
+       
            const reducedCart = cart.reduce((previous, current) => previous + current.price, 0)
            setTotal(reducedCart)
-       }
+       
        }, [cart])
     return( 
         <div> 

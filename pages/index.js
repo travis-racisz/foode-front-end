@@ -16,6 +16,7 @@ export default function Home() {
       <>
           <h1>Logged in as {session.user.email}</h1>
           <img src = {session.user.image}></img>
+          <li><Link href = "/Restaurants/AllRestaurants"><a>See all resturaunts</a></Link></li>
           <Link href = "/order/NewOrder">Place an order</Link>
       </>
     )
