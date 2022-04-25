@@ -1,17 +1,59 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+	padding: 0;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+	color: inherit;
+	text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
+}
 
+
+
+.restaurant-icon{ 
+	margin:10px;
+	height: 150px;
+	width: 100px;
+	color: black;
+}
+
+.restaurant-icon:hover{ 
+	margin:10px;
+	height: 150px;
+	width: 100px;
+	color: black;
+	cursor: pointer;
+}
+
+.icon-text{ 
+	font-size: 48px;
+	margin-left: 200px;
+}
+
+
+.homepage-icon-container{ 
+	height: fit-content;
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	flex-direction: row; 
+	font-size: 38px;
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	font-weight: 700;
+	
+}
+
+.cart-icon{ 
+	height: 100px;
+	width: 50px;
+	color: black;
+	margin-left: 20px;
 }
