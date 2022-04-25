@@ -23,7 +23,7 @@ export default function MenuItems(props:any) {
 		if (options) {
 			setMenuItemState({ ...menuItem, options: options });
 		}
-	}, [options]);
+	}, [options, menuItem]);
 
 	return (
 		<div
@@ -53,6 +53,7 @@ export default function MenuItems(props:any) {
 						? menuItem.optionsgroup.map((optionsGroup:IOptionsGroup, index:Number) => {
 								return (
 									<OptionsGroup
+										key = {index}
 										index={index}
 										options={options}
 										data={optionsGroup}

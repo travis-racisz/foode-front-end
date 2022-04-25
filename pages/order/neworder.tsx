@@ -13,7 +13,7 @@ export default function NewOrder({ data }) {
 			{data.resturaunts.map((resturaunt:Record<string,any>) => {
 				return (
 					<div key={resturaunt.id}>
-						<Link href={`/Restaurants/${resturaunt.id}`}>
+						<Link passHref href={`/Restaurants/${resturaunt.id}`}>
 							<h2>
 								<a>{resturaunt.name}</a>
 							</h2>

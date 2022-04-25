@@ -34,7 +34,7 @@ export default function Cart() {
 
 		context?.setTotal(0);
 		setOptionsTotal(0);
-	}, [context?.cart]);
+	}, [context?.cart, context]);
 
 	useEffect(() => {
 		const reducedCart = context?.cart.reduce(
@@ -42,7 +42,7 @@ export default function Cart() {
 			0
 		);
 		context?.setTotal(reducedCart + optionsTotal);
-	}, [context?.cart, optionsTotal]);
+	}, [context?.cart, optionsTotal, context]);
 	return (
 		<div>
 			<div onClick={() => setShowCart((prev) => !prev)}>

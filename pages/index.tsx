@@ -20,16 +20,16 @@ export default function Home() {
 			</Head>
 			<Header />
 			<div className="homepage-icon-container"> 
-				<Link href = "/driver/signup"><AiFillCar className = "restaurant-icon" /></Link>
+				<Link href = "/driver/signup" passHref><AiFillCar className = "restaurant-icon" /></Link>
 				<p>Become a Driver today!</p>
 
 			</div>
 			<div className="homepage-icon-container"> 
-				<Link href = "/partners/signup"><IoIosRestaurant className="restaurant-icon" /></Link>
+				<Link href = "/partners/signup" passHref><IoIosRestaurant className="restaurant-icon" /></Link>
 				<p>Become a Partner Today!</p>
 			</div>
 			<div className="homepage-icon-container"> 
-				<Link href = "/signup"><MdFastfood className="restaurant-icon" /></Link>
+				<Link href = "/signup" passHref><MdFastfood className="restaurant-icon" /></Link>
 				<p className="icon-text">Order online!</p>
 			</div>
 

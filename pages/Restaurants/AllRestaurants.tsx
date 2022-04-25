@@ -10,7 +10,7 @@ export default function AllResturaunts({ data }:any) {
 			{data.data.resturaunts.map((item:any) => {
 				return (
 					<div key={item.id}>
-						<Link href={`/Restaurants/${item.id}`}>
+						<Link href={`/Restaurants/${item.id}`} passHref>
 							<h2>
 								<a>{item.name}</a>
 							</h2>

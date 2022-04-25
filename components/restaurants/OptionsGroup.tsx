@@ -48,14 +48,14 @@ export default function OptionsGroup(props:any) {
 			...prev,
 			[index]: selected,
 		}));
-	}, [selected]);
+	}, [selected, index, setOptions]);
 
 	useEffect(() => {
 		selected.forEach((item: any) => {
 			item.checked = false;
 		});
 		setSelected([]);
-	}, [context?.cart]);
+	}, [context?.cart, selected]);
 
 	return (
 		<div
@@ -71,11 +71,12 @@ export default function OptionsGroup(props:any) {
 				<div>
 					<div>{props.data.description}</div>
 					<div>
-						{props.data.options.map((option: Array<Object>) => {
+						{props.data.options.map((option: Array<Object>, index: number) => {
 							return (
 								<Options
 									option={option}
 									handleClick={handleClick}
+									key={index}
 								/>
 							);
 						})}

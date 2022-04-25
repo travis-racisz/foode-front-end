@@ -6,7 +6,7 @@ export default function SignUp(){
         <div className="sign-up-container"> 
             <div className="sign-up-box">
                 <h1 className="title">Foode</h1>
-                <Link href = "/"><HiOutlineArrowSmLeft className='back-arrow' /></Link>
+                <Link passHref href = "/"><HiOutlineArrowSmLeft className='back-arrow' /></Link>
                 <p className='create-account'>Create an account</p>
                 <button onClick = {() => signIn()} className="continue-with-facebook">Continue with Facebook</button>
                 <div className="privacy-statement-container"> 

@@ -12,7 +12,7 @@ export default function Restaurant({ data }:any) {
 
 	useEffect(() => {
 		context?.setRestaurant(data.resturaunt[0]);
-	}, []);
+	}, [context, data.resturaunt]);
 
 	return (
 		<div>

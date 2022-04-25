@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect } from "react";
 
 export default function SignInWithFacebook() {
@@ -11,7 +12,7 @@ export default function SignInWithFacebook() {
 		return (
 			<>
 				<h1>Logged in as {session.user?.email}</h1>
-				<img src={`${session.user?.image}`}></img>
+				<Image alt = "users profile picture"src={`${session.user?.image}`}></Image>
 				<Link href="/order/NewOrder">Place an order</Link>
 			</>
 		);

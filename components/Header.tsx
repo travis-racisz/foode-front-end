@@ -14,7 +14,7 @@ export default function Header(){
             </div>
 
             <div className="header-image"> 
-                <Image src = "/foode.jpg" width={300} height = {500}></Image>
+                <Image src = "/foode.jpg" width={300} height = {500} alt = "salad on a pedestal"></Image>
 
             </div>
             <div className="header-links"> 

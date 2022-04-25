@@ -10,9 +10,8 @@ export default function Menus(props) {
 				<h4>{data.name}</h4>
 				<>
 					<div style={{ border: "1px solid black" }}>
-						{data.MenuItems.map((menuItem) => {
-							console.log(menuItem, "menuItem")
-							return <MenuItems menuItem={menuItem} />;
+						{data.MenuItems.map((menuItem:Record<string, any>, index:number) => {
+							return <MenuItems key = {index} menuItem={menuItem} />;
 						})}
 					</div>
 				</>
