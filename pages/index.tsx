@@ -5,8 +5,13 @@ import {AiFillCar} from 'react-icons/ai'
 import { IoIosRestaurant } from 'react-icons/io'
 import { MdFastfood } from 'react-icons/md'
 import Header from "../components/Header";
+import { useSession } from "next-auth/react";
+import Cart from "../components/Cart/Cart";
+
 
 export default function Home() {
+	const { data: authenticated } = useSession();
+	
 
 	
 
@@ -19,6 +24,7 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Header />
+			{authenticated && <Cart />}
 			<div className="homepage-icon-container"> 
 				<Link href = "/driver/signup" passHref><AiFillCar className = "restaurant-icon" /></Link>
 				<p>Become a Driver today!</p>

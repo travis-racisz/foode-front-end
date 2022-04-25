@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import Cart from "../components/Cart/Cart";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { ContextProvider } from "../context/ContextProvider";
 import "../styles/header.css"
 import "../styles/signupuser.css"
@@ -11,6 +12,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }:any) {
 		<SessionProvider session={session}>
 			<ContextProvider>
 				<Component {...pageProps} />
+				
 			</ContextProvider>
 		</SessionProvider>
 	);
