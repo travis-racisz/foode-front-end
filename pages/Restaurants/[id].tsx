@@ -7,6 +7,7 @@ import { CartContext } from "../../context/ContextProvider";
 
 export default function Restaurant({ data }:any) {
 	const router = useRouter();
+	console.log(data, "data");
 
 	const context = useContext(CartContext);
 

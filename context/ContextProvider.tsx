@@ -3,6 +3,7 @@ import { addDoc, doc, collection, onSnapshot, updateDoc } from "../lib/firebase"
 import { db } from "../lib/firebase";
 import { gql } from "@apollo/client"
 import { client } from "../apollo-client";
+import { useEffect } from "react";
 
 
 
@@ -32,9 +33,12 @@ export function ContextProvider(props:any) {
 	const [option, setOption] = useState({});
 	const [restaurant, setRestaurant] = useState<Record<string, any>>({});
 	const [total, setTotal] = useState(0);
-	console.log(restaurant, "restaurant")
+	useEffect(() => { 
+		localStorage.setItem("restaurantId", JSON.stringify(restaurant.id));
+	}, [restaurant])
 
 	async function addOrder(orderDetails:any, total:number, restaurantId: string) {
+		console.log(typeof restaurantId, "restaurantId");
 		const data = {
 			orderDetails: orderDetails,
 			total: total,
@@ -46,8 +50,8 @@ export function ContextProvider(props:any) {
 		listenForDriverAndUpdateDocument(newOrder.id);
 
 		const newOrderMutation = gql` 
-			mutation AddOrder($orderId: String){
-				addOrder(orderId: $orderId) {
+			mutation AddOrder($orderId: String, $RestaurantId: Int, $total: Int) {
+				addOrder(orderId: $orderId, RestaurantId: $RestaurantId, total: $total) {
 					status
 				}
 			}
@@ -57,6 +61,8 @@ export function ContextProvider(props:any) {
 			mutation: newOrderMutation,
 			variables: {
 				orderId: newOrder.id,
+				RestaurantId: parseInt(restaurantId),
+				total: total,
 			}
 		})
 		console.log(orderStatus)
