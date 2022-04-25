@@ -55,7 +55,7 @@ export default function OptionsGroup(props:any) {
 			item.checked = false;
 		});
 		setSelected([]);
-	}, [context?.cart, selected]);
+	}, [context?.cart]);
 
 	return (
 		<div
