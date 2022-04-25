@@ -32,7 +32,7 @@ export function ContextProvider(props:any) {
 	const [option, setOption] = useState({});
 	const [restaurant, setRestaurant] = useState<Record<string, any>>({});
 	const [total, setTotal] = useState(0);
-	console.log(restaurant)
+	console.log(restaurant, "restaurant")
 
 	async function addOrder(orderDetails:any, total:number, restaurantId: string) {
 		const data = {
