@@ -1,4 +1,5 @@
 import React from "react";
+import Cart from "../Cart/Cart";
 import MenuItems from "./MenuItems";
 
 export default function Menus(props) {
@@ -13,6 +14,7 @@ export default function Menus(props) {
 						{data.MenuItems.map((menuItem:Record<string, any>, index:number) => {
 							return <MenuItems key = {index} menuItem={menuItem} />;
 						})}
+						<Cart />
 					</div>
 				</>
 			</div>
