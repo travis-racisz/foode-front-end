@@ -59,7 +59,7 @@ export default function OptionsGroup(props:any) {
 
 	return (
 		<div
-			key={props.key}
+			key={props.index}
 			style={{
 				border: "1px solid black",
 				margin: "10px",
@@ -76,6 +76,7 @@ export default function OptionsGroup(props:any) {
 								<Options
 									option={option}
 									handleClick={handleClick}
+									index={index}
 									key={index}
 								/>
 							);

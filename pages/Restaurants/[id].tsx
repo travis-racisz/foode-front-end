@@ -25,10 +25,10 @@ export default function Restaurant({ data }:any) {
 			<h1 className="restaurant-name">{data.resturaunt[0].name}</h1>
 			<h3 className="menus-h3">Menus</h3>
 			<div>
-				{data.resturaunt[0].menu.map((menu:any) => {
+				{data.resturaunt[0].menu.map((menu:any, index:number) => {
 					return (
-						<div key={menu.name}>
-							<Menus data={menu} />
+						<div key={index}>
+							<Menus data={menu} index={index} />
 						</div>
 					);
 				})}

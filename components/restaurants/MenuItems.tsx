@@ -3,7 +3,7 @@ import OptionsGroup from "./OptionsGroup";
 import { CartContext } from "../../context/ContextProvider";
 
 export default function MenuItems(props:any) {
-	const { menuItem } = props;
+	const { menuItem, index } = props;
 	const [menuItemState, setMenuItemState] = useState(menuItem);
 	const [showOptions, setShowOptions] = useState(false);
 	const [options, setOptions] = useState<Options>();
@@ -28,7 +28,7 @@ export default function MenuItems(props:any) {
 
 	return (
 		<div
-			key={menuItem.name}
+			key={index}
 			className= "menu-item-container"
 		>
 			<div

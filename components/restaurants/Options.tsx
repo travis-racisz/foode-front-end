@@ -3,14 +3,14 @@ import React from "react";
 interface IProps {
 	option: Record<string, any>;
 	handleClick: (option: Record<string, any>, e: React.MouseEvent) => void;
-	key: number;
+	index: number;
 }
 
 export default function Options(props:IProps) {
-	const { option, handleClick, key } = props;
+	const { option, handleClick, index } = props;
 
 	return (
-		<div key={key}>
+		<div key={index}>
 			<label>{option.name}</label>
 			<span>${option.value / 100}.00</span>
 			<input
