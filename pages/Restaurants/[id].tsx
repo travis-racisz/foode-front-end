@@ -52,10 +52,12 @@ export async function getStaticProps(context:any) {
 						description
 						priceId
 						optionsgroup {
+							id
 							name
 							description
 							numberOfChoices
 							options {
+								id
 								name
 								priceId
 								value

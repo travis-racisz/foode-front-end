@@ -45,7 +45,7 @@ export default function MenuItems(props:any) {
 								return (
 									<OptionsGroup
 										key = {index}
-										
+										index= {index}
 										options={options}
 										data={optionsGroup}
 										menuItem={menuItem}

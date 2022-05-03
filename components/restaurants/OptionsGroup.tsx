@@ -16,7 +16,6 @@ export default function OptionsGroup(props:any) {
 
 	function handleClick(option:Record<string, any>, e:React.MouseEvent) {
 		const target: any = e.target
-		console.log(target.name)
 		if (selected.length >= count) {
 			setSelected((prev:any) => {
 				if (prev.filter((i:any) => i.name === target.name).length > 0) {
@@ -79,7 +78,6 @@ export default function OptionsGroup(props:any) {
 								<Options
 									option={option}
 									handleClick={handleClick}
-									index={index}
 									key={index}
 								/>
 							);
