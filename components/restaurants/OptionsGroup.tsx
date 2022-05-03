@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import Options from "./Options";
 import { CartContext } from "../../context/ContextProvider";
+
 export default function OptionsGroup(props:any) {
 	const [selected, setSelected] = useState<Array<Object>>([]);
 	const context = useContext(CartContext);
@@ -15,6 +16,7 @@ export default function OptionsGroup(props:any) {
 
 	function handleClick(option:Record<string, any>, e:React.MouseEvent) {
 		const target: any = e.target
+		console.log(target.name)
 		if (selected.length >= count) {
 			setSelected((prev:any) => {
 				if (prev.filter((i:any) => i.name === target.name).length > 0) {
@@ -72,6 +74,7 @@ export default function OptionsGroup(props:any) {
 					<div>{props.data.description}</div>
 					<div>
 						{props.data.options.map((option: Array<Object>, index: number) => {
+				
 							return (
 								<Options
 									option={option}
