@@ -5,6 +5,14 @@ import Image from "next/image"
 export default function Profile(){ 
     const { data } = useSession()
 
+    if(!data){ 
+        return ( 
+            <div> 
+                <h1>Oops something went wrong, <Link href = "/">Return Home?</Link></h1>
+            </div>
+        )
+    }
+
     return( 
         <div className="profile-container">
             <h1 className="profile-welcome">Welcome, {data?.user.name}</h1>

@@ -1,21 +1,21 @@
 import React from "react";
-import Cart from "../Cart/Cart";
 import MenuItems from "./MenuItems";
 
 export default function Menus(props) {
 	const { data } = props;
 
 	return (
-		<div key={data.name}>
+		<div className = "menu-container" key={data.name}>
 			<div>
-				<h4>{data.name}</h4>
+				<h4 className="menu-name">{data.name}</h4>
 				<>
-					<div style={{ border: "1px solid black" }}>
+					<div>
 						{data.MenuItems.map((menuItem:Record<string, any>, index:number) => {
 							return <MenuItems key = {index} menuItem={menuItem} />;
 						})}
-						<Cart />
+						
 					</div>
+					<div className="menu-divider"></div>
 				</>
 			</div>
 		</div>

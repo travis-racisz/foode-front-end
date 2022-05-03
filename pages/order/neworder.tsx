@@ -8,14 +8,14 @@ export default function NewOrder({ data }) {
 	console.log(data);
 	// get all restaurants and display them here, similar to seeing all restaurants on other component
 	return (
-		<div>
+		<div className="restaurant-list">
 			<Cart />
 			{data.resturaunts.map((resturaunt:Record<string,any>) => {
 				return (
 					<div key={resturaunt.id}>
 						<Link passHref href={`/Restaurants/${resturaunt.id}`}>
 							<h2>
-								<a>{resturaunt.name}</a>
+								<a className="restaurant-names">{resturaunt.name}</a>
 							</h2>
 						</Link>
 					</div>

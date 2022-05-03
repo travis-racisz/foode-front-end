@@ -44,37 +44,31 @@ export default function Cart() {
 		context?.setTotal(reducedCart + optionsTotal);
 	}, [context?.cart, optionsTotal, context]);
 	return (
-		<div>
+		<div className="cart-sticky">
 			<div onClick={() => setShowCart((prev) => !prev)}>
 				<GrCart className="cart-icon"/>
 			</div>
-
-			{showCart ? (
-				<div style={{ border: "2px solid grey" }}>
-					{context?.cart.map((item: Record<string, any>) => {
+			
+				<div className={showCart ? "show-modal" : "no-display"}>
+					{context?.cart.map((item: Record<string, any>, index: number) => {
 						return (
 							<div
-								style={{
-									border: "2px solid black",
-									margin: "5px",
-									padding: "5px",
-									width: "500px",
-								}}
-								key={item.name}
+								className="cart-item"
+								key={index}
 							>
-								<p>{item.name}</p>
-								<p>${item.price / 100}.00</p>
+								<p className="cart-item-name">{item.name}</p>
+								<p className="cart-item-price">${(item.price / 100).toFixed(2)}</p>
 								<div>
 									{
 										item.options &&
-											item.options.map((option: Record<string, any>) => {
+											item.options.map((option: Record<string, any>, index: number) => {
 												return (
-													<div key={option.name}>
+													<div key={index}>
 														<p>{option.name} </p>
 														<p>
 															$
-															{option.value / 100}
-															.00
+															{(option.value / 100).toFixed(2)}
+															
 														</p>
 													</div>
 												);
@@ -93,12 +87,22 @@ export default function Cart() {
 							</div>
 						);
 					})}
-					<h1>Total: ${context?.total} </h1>
-					<button onClick={() => context?.addOrder(context.cart, context.total, context.restaurant.id)}>
+					<h1>Total: ${(context?.total / 100 ).toFixed(2)} </h1>
+					<button className="cart-checkout-button" onClick={() =>{  
+						if(context.cart.length > 0){
+							context?.addOrder(context.cart, context.total, context.restaurant.id)
+						} else { 
+							alert("Cart is empty")
+						}
+							
+						
+						} 
+						
+					
+				}>
 						Checkout
 					</button>
 				</div>
-			) : null}
 		</div>
 	);
 }

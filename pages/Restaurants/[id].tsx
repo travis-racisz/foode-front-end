@@ -4,10 +4,10 @@ import { client } from "../../apollo-client";
 import Menus from "../../components/restaurants/Menus";
 import { useContext, useEffect } from "react";
 import { CartContext } from "../../context/ContextProvider";
-
+import Cart from "../../components/Cart/Cart";
+import { IoMdArrowRoundBack } from "react-icons/io";
 export default function Restaurant({ data }:any) {
 	const router = useRouter();
-	console.log(data, "data");
 
 	const context = useContext(CartContext);
 
@@ -17,8 +17,13 @@ export default function Restaurant({ data }:any) {
 
 	return (
 		<div>
-			<h1>{data.resturaunt[0].name}</h1>
-			<h3>Menus</h3>
+			<div> 
+				<IoMdArrowRoundBack className="back-arrow" onClick={() => router.back()} />
+			</div>
+
+				<Cart />
+			<h1 className="restaurant-name">{data.resturaunt[0].name}</h1>
+			<h3 className="menus-h3">Menus</h3>
 			<div>
 				{data.resturaunt[0].menu.map((menu:any) => {
 					return (
