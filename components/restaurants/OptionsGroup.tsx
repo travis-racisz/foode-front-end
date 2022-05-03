@@ -59,7 +59,7 @@ export default function OptionsGroup(props:any) {
 
 	return (
 		<div
-			key={props.data.name}
+			key={props.key}
 			style={{
 				border: "1px solid black",
 				margin: "10px",

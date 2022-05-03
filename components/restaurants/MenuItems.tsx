@@ -41,11 +41,11 @@ export default function MenuItems(props:any) {
 
 				<div>
 					{showOptions
-						? menuItem.optionsgroup.map((optionsGroup:IOptionsGroup, index:Number) => {
+						? menuItem.optionsgroup.map((optionsGroup:IOptionsGroup, index: number) => {
 								return (
 									<OptionsGroup
 										key = {index}
-										index={index}
+										
 										options={options}
 										data={optionsGroup}
 										menuItem={menuItem}
