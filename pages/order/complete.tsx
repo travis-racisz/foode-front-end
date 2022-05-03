@@ -16,9 +16,9 @@ export default function Complete(){
     if(context.orderStatus === "canceled"){ 
         return( 
             <div className="complete-container">
-                <p>We're sorry, there aren't any drivers available right now.</p>
+                <p>We&apos;re sorry, there aren&apos;t any drivers available right now.</p>
                 <p>We have automatically refunded your order.</p>
-                <p>Please return to the <Link href = "/"><a>home page</a></Link> to place another order.</p>
+                <p>Please return to the <Link href = '/'><a>home page</a></Link> to place another order.</p>
             </div> 
         )
     } 

@@ -31,7 +31,7 @@ export default function CheckoutForm(){
             {errorMessage && <span className="stripe-error-message">{errorMessage}</span>}
           </form> 
           <div className={processing && !context.error ? 'processing-payment' : "processing-payment-hidden"}> 
-              <span className='processing-text'>We're currently looking for a driver to pick up your order, Please wait</span>
+              <span className='processing-text'>We&apos;re currently looking for a driver to pick up your order, Please wait</span>
               <div className='loader'> </div>
           </div>
 
