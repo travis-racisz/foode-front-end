@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
 	padding: 0;
@@ -19,7 +23,9 @@ a {
 }
 
 
-
+.background-red{ 
+	background: var(--red);
+}
 .restaurant-icon{ 
 	margin:10px;
 	height: 150px;
@@ -76,6 +82,19 @@ a {
 	justify-content: center;
 	flex-direction: column;
 
+}
+
+.small-margin{ 
+	margin: 20px
+}
+
+.small-margin-top{ 
+	margin-top: 20px;
+}
+
+.white{ 
+	background: white;
+	color: black;
 }
 
 .new-order-button{ 
@@ -218,11 +237,15 @@ a {
 
   .cart-sticky{ 
 	  position: fixed;
+	  float: right;
 	  margin: 10px;
 	  position: -webkit-sticky;
 	  right:0;
 	  top: 0px;
 	  z-index: 1;
+	  scroll-behavior: smooth;
+	  overflow-y: scroll;
+	  min-height: fit-content;
 
   }
 
@@ -236,6 +259,7 @@ a {
 	height: 100vh;
 	top: 0;
 	border-radius: 0px;
+	overflow-y: scroll;
 	/* background: rgba(300,300,300,1); */
 	transition: 1s;
   }
@@ -370,4 +394,66 @@ a {
 	  border:none;
 	  color: white;
 	  border-radius: 5px;
+  }
+
+  .phone-input-container{ 
+	  display: flex;
+	  flex-direction: row;
+
+	  width: 100vw;
+  }
+
+  .phone-input{ 
+	  border:none; 
+	  margin: 20px;
+	  border-radius: 10px;
+  }
+
+  .name-form-container{ 
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	  justify-content: center;
+	  width: 100vw;
+  }
+
+  .name-form{ 
+	  background-color: var(--red);
+	  height: 700px;
+	  width: 500px;
+	  border: none; 
+	  border-radius: 10px;
+	  color: white;
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-evenly;
+	  flex-direction: column;
+  }
+
+  .top-position{ 
+	  position: absolute;
+	  top: 0;
+  }
+
+  .no-space-evenly{ 
+	  display: flex;
+	  justify-content: center;
+  }
+
+  .name-input{ 
+	  border: none;
+	  border-radius: 20px;
+	  margin: 20px;
+	  width: 300px;
+	  padding: 10px;
+  }
+
+  .profile-name-image{ 
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+  }
+
+  .profile-image{ 
+	  border-radius: 100%;
   }

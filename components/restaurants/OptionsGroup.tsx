@@ -12,7 +12,7 @@ export default function OptionsGroup(props:any) {
 	const context = useContext(CartContext);
 	let count = props.data.numberOfChoices;
 
-	const { setOptions, index } = props;
+	const { setOptions, index } = props
 
 	function handleClick(option:Record<string, any>, e:React.MouseEvent) {
 		const target: any = e.target

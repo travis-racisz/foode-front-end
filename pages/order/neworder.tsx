@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { client } from "../../apollo-client";
 import Link from "next/link";
-import Cart from "../../components/Cart/Cart";
+import Cart from "../../components/cart/Cart";
 import { stringify } from "querystring";
 
 export default function NewOrder({ data }) {

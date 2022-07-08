@@ -5,8 +5,8 @@ import { useEffect } from "react";
 
 export default function SignInWithFacebook() {
 	const { data: session, status } = useSession();
-	console.log(session);
-	console.log(status);
+	console.log(session, 'session');
+	console.log(status, 'status');
 	if (session) {
 		console.log(session, "session");
 		return (

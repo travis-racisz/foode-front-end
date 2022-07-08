@@ -1,13 +1,33 @@
-import { createContext, useState } from "react";
+import { createContext, useState, VoidFunctionComponent } from "react";
 import { addDoc, doc, collection, onSnapshot, updateDoc } from "../lib/firebase";
-import { db } from "../lib/firebase";
+import { db, auth } from "../lib/firebase";
 import { gql } from "@apollo/client"
 import { client } from "../apollo-client";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { getAuth, 
+	createUserWithEmailAndPassword, 
+	FacebookAuthProvider,
+	getRedirectResult,
+	signInWithPopup
+ } from "firebase/auth";
+import { getDoc, setDoc } from "firebase/firestore";
 
 
 
+const facebookProvider = new FacebookAuthProvider();
+
+
+interface driverRegistrationInterface { 
+	firstName: string, 
+	lastName: string, 
+	email: string, 
+	password: string, 
+	failedLoginAttempts: number, 
+	account_locked_until: string, 
+	currently_delivering: boolean, 
+	stripe_id: string, 
+}
 
 
 
@@ -38,6 +58,14 @@ interface CartContextInterface {
 	listenForDriverAndUpdateDocument: (orderId: string) => void,
 	handleSubmit: (e: any, elements:any, stripe: any, setErrorMessage: any, setProcessing: any) => void,
 	createPaymentIntent: (total: number, orderId:String) => void,
+	phoneNumber: string,
+	setPhoneNumber: (phoneNumber: any) => void
+	user: Record<string, any>,
+	setUser: (user: Record<string, any>) => void, 
+	signInWithEmail: (email: string, password: string) => void,
+	signInWithFacebook: () => void,
+	driverRegistration: any, 
+	setDriverRegistration: any
 }
 
 export const CartContext = createContext<CartContextInterface | null> (null);
@@ -53,9 +81,19 @@ export function ContextProvider(props:any) {
 	const [ orderStatus, setOrderStatus ] = useState<string>("");
 	const [ orderId, setOrderId ] = useState<string>('');
 	const [ paymentIntentId, setPaymentIntentId ] = useState<string>("");
+	const [ phoneNumber, setPhoneNumber ] = useState<string>("");
+	const [ user, setUser ] = useState<Record<string,any>>({});
+	const [ driverRegistration, setDriverRegistration ] = useState<driverRegistrationInterface>({ 
+		firstName: "", 
+		lastName: "", 
+		email: "", 
+		password: "" , 
+		failedLoginAttempts: 0, 
+		stripe_id: "" , 
+		account_locked_until: "", 
+		currently_delivering: false
+	})
 	const router = useRouter()
-
-	console.log(cart, "cart");
 
 	useEffect(() => { 
 		localStorage.setItem("restaurantId", JSON.stringify(restaurant.id));
@@ -83,9 +121,56 @@ export function ContextProvider(props:any) {
 		setPaymentIntentId(data.createPaymentIntent.id);
 		router.push({ 
 			pathname: `/payment/${data.createPaymentIntent.clientSecret}`
-	})
-}
+		})
+	}
 
+	async function signInWithFacebook(){ 
+		signInWithPopup(auth, facebookProvider)
+		.then((result) => {
+			console.log(result, "this is the result")
+			// The signed-in user info.
+			const user = result.user;
+
+			// This gives you a Facebook Access Token. You can use it to access the Facebook API.
+			const credential = FacebookAuthProvider.credentialFromResult(result);
+			const accessToken = credential.accessToken;
+			setUser(user)
+			
+			// ...
+		})
+		.then(async () => { 
+			router.push("/profile/user")
+			const userRef = doc(db, 'users', user.email, );
+			
+			// check if the document exists
+			const userDoc = await getDoc(userRef)
+			if(!userDoc.exists()){ 
+				console.log('sign up')
+				await setDoc(userRef, { 
+					email: user.email,
+					displayName: user.displayName,
+					photoURL: user.photoURL,
+					phoneNumber: user.phoneNumber,
+				})
+				return;
+			}
+			// if it doesnt exist, create it
+
+			// get the users profile info from the database
+		})
+		.catch((error) => {
+			// Handle Errors here.
+			const errorCode = error.code;
+			const errorMessage = error.message;
+			// The email of the user's account used.
+			const email = error.email;
+			console.log(error, "error")
+			// The AuthCredential type that was used.
+			const credential = FacebookAuthProvider.credentialFromError(error);
+
+			// ...
+		});
+	}
 
 	async function handleSubmit(event: any, elements: any, stripe: any, setErrorMessage: any, setProcessing: any){ 
 		event.preventDefault()
@@ -137,6 +222,23 @@ export function ContextProvider(props:any) {
 		
 		  
 	}
+
+	async function signInWithEmail(email:string, password:string){ 
+		createUserWithEmailAndPassword(auth, email, password)
+			.then((userCredential) => {
+				// Signed in 
+				const user = userCredential.user;
+				setUser(user)
+				// ...
+			})
+			.catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				console.log(errorMessage)
+				// ..
+			});
+	}
+	
 	async function addOrder(orderDetails:any, total:number, restaurantId: string) {
 
 		const newOrderMutation = gql` 
@@ -265,43 +367,22 @@ export function ContextProvider(props:any) {
 		setCart(cart.filter((cartItem:any) => cartItem.id !== item.id));
 	}
 
-	// function submitOrder(cart) {
-	// 	// make graphql mutation
-	// 	const mutation = gql`
-	// 		mutation AddOrder(
-	// 			$userId: String
-	// 			$status: String
-	// 			$price: Int
-	// 			$menuItems: [InputMenuItems]
-	// 		) {
-	// 			addOrder(
-	// 				status: $status
-	// 				price: $price
-	// 				menuItems: $menuItems
-	// 			) {
-	// 				url
-	// 			}
-	// 		}
-	// 	`;
 
-	// 	client.mutate({
-	// 		mutation,
-	// 		variables: {
-	// 			status: "pending",
-	// 			price: cart.reduce((acc, item) => acc + item.price, 0),
-	// 			menuItems: cart.map((item) => ({
-	// 				name: item.name,
-	// 				price: item.price,
-	// 				description: item.description,
-	// 			})),
-	// 		},
-	// 	});
-	// }
+	function signUpDriver(email:string, password:string){ 
+		// send mutation to back end with username and password
+		// return if the account was successfully created 
+	}
 
 	return (
 		<CartContext.Provider
 			value={{
 				// uploadImage,
+				user, 
+				setUser, 
+				signInWithEmail, 
+				signInWithFacebook,
+				phoneNumber, 
+				setPhoneNumber,
 				createPaymentIntent,
 				driverAcceptsOrder,
 				orderId,
@@ -325,6 +406,8 @@ export function ContextProvider(props:any) {
 				removeFromCart,
 				handleSubmit,
 				listenForDriverAndUpdateDocument,
+				driverRegistration, 
+				setDriverRegistration,
 				// submitOrder,
 				addOrder,
 			}}>
