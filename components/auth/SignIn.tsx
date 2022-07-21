@@ -1,8 +1,8 @@
 import { useEffect, useContext } from "react";
 import Link from "next/link";
-import { CartContext } from "../context/ContextProvider";
+import { CartContext } from "../../context/ContextProvider";
 import { HiOutlineArrowSmLeft } from "react-icons/hi";
-export default function Signin(){ 
+export default function SignIn(){ 
     const context = useContext(CartContext);
 
         
@@ -21,5 +21,3 @@ export default function Signin(){
     ) 
 }
        
-
-    

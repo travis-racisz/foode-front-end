@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { CartContext } from '../../context/ContextProvider';
+import { CartContext } from '../../../context/ContextProvider';
 import PhoneInput, {isValidPhoneNumber} from 'react-phone-number-input';
 import 'react-phone-number-input/style.css'
 

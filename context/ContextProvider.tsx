@@ -1,7 +1,7 @@
 import { createContext, useState, VoidFunctionComponent } from "react";
 import { addDoc, doc, collection, onSnapshot, updateDoc } from "../lib/firebase";
 import { db, auth } from "../lib/firebase";
-import { gql } from "@apollo/client"
+import { gql, useQuery } from "@apollo/client"
 import { client } from "../apollo-client";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
@@ -9,9 +9,12 @@ import { getAuth,
 	createUserWithEmailAndPassword, 
 	FacebookAuthProvider,
 	getRedirectResult,
-	signInWithPopup
+	signInWithEmailAndPassword,
+	signInWithPopup,
+	setPersistence,
+	browserLocalPersistence
  } from "firebase/auth";
-import { getDoc, setDoc } from "firebase/firestore";
+import { getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
 
 
 
@@ -57,15 +60,32 @@ interface CartContextInterface {
 	driverAcceptsOrder: (orderId: string, driverDetails:Record<string, any>) => void, 
 	listenForDriverAndUpdateDocument: (orderId: string) => void,
 	handleSubmit: (e: any, elements:any, stripe: any, setErrorMessage: any, setProcessing: any) => void,
-	createPaymentIntent: (total: number, orderId:String) => void,
+	createPaymentIntent: (total: Number, orderId:String) => void,
 	phoneNumber: string,
 	setPhoneNumber: (phoneNumber: any) => void
 	user: Record<string, any>,
 	setUser: (user: Record<string, any>) => void, 
 	signInWithEmail: (email: string, password: string) => void,
 	signInWithFacebook: () => void,
+	getPendingOrders: () => void,
+	orderDetails: Record<string, any>,
+	pendingOrders: Array<any>,
+	driverDetails: Record<string, any>,
+	clearError: () => void,
 	driverRegistration: any, 
-	setDriverRegistration: any
+	completeOrder: (orderId: string | string [], token: string) => void,
+	signUpDriver: (email: string, password:string, confirmPassword: string) => void,
+	getOrderDetails: (orderId: string | string[]) => void,
+	authError: string,
+	signInDriver: (email: string, password: string) => void,
+	setDriverRegistration: any, 
+	getDriverProfile: (token: string) => void,
+	completedOrders: Array<any>,
+	errorMessage: string,
+	setCompletedOrders: (completedOrders: Array<any>) => void,
+	setDriverDetails: (driverDetails: Record<string, any>) => void,
+	getLoginLink: (stripeAccount: string) => void, 
+	updateOrderStatus:(status:string | string[], orderId: string | string[]) => void,
 }
 
 export const CartContext = createContext<CartContextInterface | null> (null);
@@ -78,11 +98,17 @@ export function ContextProvider(props:any) {
 	const [total, setTotal] = useState(0);
 	const [ clientSecret, setClientSecret ] = useState<string>("");
 	const [ error, setError] = useState<boolean>(false);
+	const [ errorMessage, setErrorMessage ] = useState<string>("")
 	const [ orderStatus, setOrderStatus ] = useState<string>("");
 	const [ orderId, setOrderId ] = useState<string>('');
 	const [ paymentIntentId, setPaymentIntentId ] = useState<string>("");
 	const [ phoneNumber, setPhoneNumber ] = useState<string>("");
+	const [ driver, setDriver ] = useState({})
 	const [ user, setUser ] = useState<Record<string,any>>({});
+	const [ pendingOrders, setPendingOrders ] = useState([])
+	const [ authError, setAuthError ] = useState<string>("");
+	const [ orderDetails, setOrderDetails ] = useState<Record<string, any>>({})
+	const [ completedOrders, setCompletedOrders ] = useState([])
 	const [ driverRegistration, setDriverRegistration ] = useState<driverRegistrationInterface>({ 
 		firstName: "", 
 		lastName: "", 
@@ -93,13 +119,15 @@ export function ContextProvider(props:any) {
 		account_locked_until: "", 
 		currently_delivering: false
 	})
+	const [ driverDetails, setDriverDetails ] = useState({})
 	const router = useRouter()
 
 	useEffect(() => { 
+		
 		localStorage.setItem("restaurantId", JSON.stringify(restaurant.id));
 	}, [restaurant])
 
-	async function createPaymentIntent(total: number, orderId:String){ 
+	async function createPaymentIntent(total:Number, orderId:String){ 
 		const createPaymentIntentMutation = gql` 
 			mutation createPaymentIntent($total: Float!, $orderId: String!){
 				createPaymentIntent(total: $total, orderId: $orderId){
@@ -108,6 +136,7 @@ export function ContextProvider(props:any) {
 				}
 			}
 		`
+		
 
 		const { data } = await client.mutate({
 			mutation: createPaymentIntentMutation,
@@ -176,7 +205,6 @@ export function ContextProvider(props:any) {
 		event.preventDefault()
 			setProcessing(true)
 			setError(false)
-		console.log('fired')
 		const unsub1 = onSnapshot(doc(db, `orders`, orderId),
 		 async (doc) => {
 			 console.log(doc)
@@ -289,30 +317,88 @@ export function ContextProvider(props:any) {
 				const data = doc.data();
 				if (data?.status === "accepted") {
 					setOrderStatus("accepted");
-				}
-				if (data?.status === "delivered") {
-					setOrderStatus("delivered");
+					unsub1()
 				}
 				if (data?.status === "canceled") {
 					setOrderStatus("canceled");
+					unsub1()
 				}
 			}
 		})
+	
 
 	}
 
 	async function driverAcceptsOrder(orderId: string, driverDetails: Record<string, any>){ 
 		const orderRef = collection(db, "orders");
-		const driverDetailsDev = { 
-			driverName: "John Handcock",
-			phoneNumber: "939-200-9954"
-		}
 		await updateDoc(doc(orderRef, orderId), {
 			status: "accepted",
-			driverDetails: driverDetailsDev,
+			driverDetails: driverDetails,
 		});
+		router.push(`/order/accepted/${orderId}`);
 	}
 
+
+	function updateOrderStatus(status, orderId){ 
+		const orderRef = collection(db, "orders");
+		updateDoc(doc(orderRef, orderId), {
+			status: status,
+		});
+		
+	}
+
+	async function completeOrder(orderId, token){ 
+		const mutation = gql`
+			mutation driverCompletesDelivery($orderId: String!, $token: String!) {
+				driverCompletesDelivery(orderId: $orderId, token: $token) {
+					id
+					status
+					total
+				}
+			}`
+
+			try{ 
+				const { data, errors } = await client.mutate({ 
+					mutation: mutation,
+					variables: {
+						orderId: orderId,
+						token: token
+					}
+				})
+
+			} catch(error: any){ 
+				handleError(error)
+			}
+		
+
+			// if(errors){ 
+			// 	console.log(errors)
+			// }
+
+			// if(data?.driverCompletesDelivery.status === "success"){
+			// 	router.push('/driver/dashboard')
+			// }
+
+		
+
+
+	}
+
+	function handleError(error){ 
+		console.log(error)
+		setErrorMessage(error.message)
+		if(error.message.includes('jwt expired')){ 
+			setErrorMessage("session has expired, please log in again")
+			setUser(null)
+			localStorage.removeItem("token")
+			
+		}
+	}
+
+	function clearError(){ 
+		setErrorMessage("")
+		router.push('/')
+	}
 	// function uploadImage(e) {
 	// 	const file = e.target.files[0];
 	// 	const uploader = document.getElementById("uploader");
@@ -336,13 +422,54 @@ export function ContextProvider(props:any) {
 	// 	);
 	// }
 
+
+
+	async function getPendingOrders(){ 
+		
+		const orderRef = collection(db, "orders");
+		// get all orders with status pending from firestore
+		const q = query(orderRef, where('status', '==', 'pending'));
+		const unsubscribe = onSnapshot(q, (snapshot) => {
+			const pendingOrders = []
+			console.log(snapshot.docs)
+			snapshot.docs.map((doc) => { 
+				if(doc.data()){ 
+					const data = { 
+						data: doc.data(),
+						id: doc.id
+					}
+					pendingOrders.push(data)
+				}
+				// TODO CHANGE THIS SO IT ONLY RENDERS ONCE
+				
+			})
+			setPendingOrders(pendingOrders)
+			
+		})
+		// const querySnapshot = await getDocs(q)
+		// querySnapshot.forEach((doc) => {
+		// 	const data = { 
+		// 		data: doc.data(),
+		// 		id: doc.id
+		// 	}
+		// 	setPendingOrders(prev => { 
+		// 		return [...prev, data]
+		// 	})
+		// })
+	}
+
+	async function getOrderDetails(orderId: string){
+		const orderRef = doc(db, "orders", orderId);
+		const querySnapshot = await getDoc(orderRef)
+		setOrderDetails(querySnapshot.data())
+	}
+
 	function addToCart(item:any) {
 		const displayOptions:Array<Object> = [];
 		// loop through each cart item
 		if (item.options) {
 			for (let key in item.options) {
 				// loop through each option in the cart item
-				console.log(item.options[key]);
 				if (item.options[key].length > 0) {
 					item.options[key].forEach((option:any) => {
 						// push each option to the displayOptions array
@@ -368,17 +495,192 @@ export function ContextProvider(props:any) {
 	}
 
 
-	function signUpDriver(email:string, password:string){ 
-		// send mutation to back end with username and password
-		// return if the account was successfully created 
+	async function signUpDriver(email:string, password:string, confirmPassword: string){
+		if(password !== confirmPassword){ 
+			return setAuthError("Passwords do not match")
+		} 
+		const signUpMutation = gql` 
+			mutation addDrivers($email: String!, $password: String!) {
+				addDrivers(email: $email, password: $password) {
+					url
+				}
+			}
+		`
+
+		try{ 
+			const { data: { addDrivers } } = await client.mutate({
+				mutation: signUpMutation,
+				variables: {
+					email: email,
+					password: password
+				}
+			})
+			if(addDrivers.url){ 
+				router.push(addDrivers.url);
+			}
+			
+		} catch(err){ 
+			console.log(err, "err")
+		}
+
+		// const auth = getAuth()
+		// createUserWithEmailAndPassword(auth, email, password)
+		// .then(async (userCredentials) => { 
+		// 		const userRef = doc(db, "users", userCredentials.user.uid);
+		// 		setDriverDetails(userCredentials.user)
+		// 		await setDoc(userRef, { 
+		// 			uid: userCredentials.user.uid,
+		// 			email: userCredentials.user.email,
+		// 			emailVerified: userCredentials.user.emailVerified,
+		// 		})
+		// 		router.push("/driver/dashboard")
+		// 	})
+		// 	.catch(err => { 
+		// 		console.log(err)
+		// 		setAuthError(err.message)
+		// 	})
 	}
+
+	async function signInDriver(email: string, password: string){ 
+		const signInMutation = gql` 
+			mutation loginDrivers($email: String!, $password: String!) {
+				loginDrivers(email: $email, password: $password) {
+					token	
+					url
+				}
+			}
+		`
+			try { 
+				const { data: { loginDrivers } } = await client.mutate({ 
+					mutation: signInMutation,
+					variables: {
+						email: email,
+						password: password
+					}
+				})
+				console.log(loginDrivers, "loginDrivers")
+				if(loginDrivers.token){ 
+					localStorage.setItem("token", loginDrivers.token)
+				}
+
+				if(loginDrivers.url){ 
+					router.push(loginDrivers.url)
+				} 
+
+				if(!loginDrivers.url){ 
+					router.push("/driver/dashboard")
+				}
+
+			} catch(err){ 
+				setAuthError(err.message)
+			}
+
+	}
+
+	async function getDriverProfile(token){ 
+
+		const orderQuery = gql` 
+			query getDriversCompletedOrders($id: String!) {
+				getDriversCompletedOrders(id: $id) {
+					total
+					orderDetails{ 
+						name
+						price
+					}
+				}
+			}
+		`
+		const query = gql`
+			query getDriverProfile($token: String!) {
+				getDriverProfile(token: $token) {
+					id
+					email
+					verified
+					stripe_id
+				}
+			}`
+			
+				const {loading, data, error} = await client.query({
+					query: query,
+					variables: {
+						token: token
+					}, 
+					errorPolicy: "all"
+				})
+
+				// const {loading, data, error } = useQuery(orderQuery, {
+				// 	variables: {
+				// 		token: token
+				// 		}, 
+				// 		errorPolicy: "all"
+				// 	})
+				
+					
+				if(error){ 
+					console.log(error, "error message")
+					// router.push('/driver/auth/signIn')
+				}
+				console.log(error, 'error')
+				console.log(data, "getDriverProfile")
+				// setDriverDetails(data.getDriverProfile)
+				// const { data: { getDriversCompletedOrders } } = await client.query({
+				// 	query: orderQuery,
+				// 	variables: {
+				// 		id: data.getDriverProfile.id, 
+				// 	}
+				// })
+				// setCompletedOrders(getDriversCompletedOrders)
+			
+			
+			}
+
+			async function getLoginLink(stripeAccount){ 
+				const loginLink = gql` 
+					query getDriversStripeProfile($stripeAccount: String!) {
+						getDriversStripeProfile(stripeAccount: $stripeAccount) {
+							url
+						}
+					}
+
+				`
+				try{
+					const {data: {getDriversStripeProfile: {url}}} = await client.query({ 
+						query: loginLink,
+						variables: {
+							stripeAccount: stripeAccount
+						}
+					})
+					console.log(url, "link")
+					router.push(`${url}`)
+			} catch(err){ 
+				return err
+			}
+		}
+			
+
 
 	return (
 		<CartContext.Provider
 			value={{
 				// uploadImage,
 				user, 
+				clearError,
+				setDriverDetails,
+				errorMessage,
+				setCompletedOrders,
+				authError,
+				getLoginLink,
+				updateOrderStatus,
 				setUser, 
+				completedOrders,
+				getDriverProfile,
+				signInDriver,
+				completeOrder,
+				orderDetails, 
+				signUpDriver,
+				getOrderDetails,
+				getPendingOrders,
+				driverDetails,
 				signInWithEmail, 
 				signInWithFacebook,
 				phoneNumber, 
@@ -387,6 +689,7 @@ export function ContextProvider(props:any) {
 				driverAcceptsOrder,
 				orderId,
 				cart,
+				pendingOrders,
 				orderStatus,
 				setOrderStatus,
 				error, 
@@ -407,8 +710,7 @@ export function ContextProvider(props:any) {
 				handleSubmit,
 				listenForDriverAndUpdateDocument,
 				driverRegistration, 
-				setDriverRegistration,
-				// submitOrder,
+				setDriverRegistration,				// submitOrder,
 				addOrder,
 			}}>
 			{props.children}

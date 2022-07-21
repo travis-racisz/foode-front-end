@@ -23,19 +23,24 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Header />
-			<div className="homepage-icon-container"> 
-				<Link href = "/driver/signup" passHref><AiFillCar className = "restaurant-icon" /></Link>
-				<p>Become a Driver today!</p>
+			<Link href = "/driver/auth/signup">
+				<div className="homepage-icon-container"> 
+					<Link href = "/driver/auth/signup" passHref><AiFillCar className = "restaurant-icon" /></Link>
+					<p>Sign up as Driver today!</p>
 
-			</div>
-			<div className="homepage-icon-container"> 
+				</div>
+			</Link>
+			{/* <div className="homepage-icon-container"> 
 				<Link href = "/partners/signup" passHref><IoIosRestaurant className="restaurant-icon" /></Link>
 				<p>Become a Partner Today!</p>
-			</div>
+			</div> */}
+			<Link href = "/user/signup">
 			<div className="homepage-icon-container"> 
 				<Link href = "/signup" passHref><MdFastfood className="restaurant-icon" /></Link>
 				<p className="icon-text">Order online!</p>
 			</div>
+			</Link>
+			
 
 			
 		</div>

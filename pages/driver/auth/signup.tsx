@@ -1,10 +1,10 @@
 import Link from "next/link"
 import { useContext } from "react"
-import { CartContext } from "../../context/ContextProvider"
+import { CartContext } from "../../../context/ContextProvider"
 import { HiOutlineArrowSmLeft } from "react-icons/hi"
 export default function signup(){ 
 
-    const { setDriverRegistration, driverRegistration } = useContext(CartContext)
+    const { setDriverRegistration, driverRegistration, signUpDriver, authError } = useContext(CartContext)
     function handleChange(e){ 
         const {name, value} = e.target
 
@@ -25,12 +25,14 @@ export default function signup(){
             <label className="text-white">Password</label>
             <input className="name-input" placeholder="password" type = 'password' value = {driverRegistration.password} onChange = {(e) => handleChange(e)} name = "password"></input>
             <label className="text-white">confirm password</label>
-            <input className="name-input" placeholder="password" type = 'password' value = {driverRegistration.password} onChange = {(e) => handleChange(e)} name = "password"></input>
-            <button onClick = {() => console.log('click')} className="new-order-button white">Submit</button>
+            <input className="name-input" placeholder="password" type = 'password' value = {driverRegistration.confirmPassword} onChange = {(e) => handleChange(e)} name = "confirmPassword"></input>
+            <button onClick = {() => signUpDriver(driverRegistration.email, driverRegistration.password, driverRegistration.confirmPassword)} className="new-order-button white">Submit</button>
+            {authError ? <p className="text-red">{authError}</p> : null}
+           
         </div> 
 
 
-            <p>Already have an account? Sign in <Link href="/driver/signIn" passHref>Here</Link></p>
+            <p>Already have an account? Sign in <Link href="/driver/auth/signIn" passHref>Here</Link></p>
         Sign up here
     </div>
     )

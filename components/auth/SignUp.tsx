@@ -2,7 +2,7 @@ import { HiOutlineArrowSmLeft } from 'react-icons/hi';
 import Link from 'next/link'
 import { signIn } from 'next-auth/react';
 import { useContext } from 'react'
-import { CartContext } from '../context/ContextProvider';
+import { CartContext } from '../../context/ContextProvider';
 
 export default function SignUp(){ 
     const { signInWithFacebook } = useContext(CartContext);

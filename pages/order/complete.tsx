@@ -25,8 +25,11 @@ export default function Complete(){
     if(context.orderStatus === "accepted"){
         return( 
             <div className="complete-container">
-                <p>Your order has been accepted!</p>
-                <p>Driver Details go here</p>
+                <p>Your order has been accepted and it is on its way!</p>
+                <h2>Driver Details</h2>
+                <p>Driver Name: {context.driverDetails.firstName} {context.driverDetails.lastName}</p>
+                <p>Drivers Phone Number: {context.driverDetails.phoneNumber}</p>
+                <p>Please only contact the driver if there are any issues</p>
             </div>
 
         )

@@ -1,14 +1,11 @@
 import "../styles/globals.css";
 import { SessionProvider } from "next-auth/react";
-import Cart from "../components/cart/Cart";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { ContextProvider } from "../context/ContextProvider";
 import "../styles/header.css"
 import "../styles/signupuser.css"
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
-
+import { ApolloProvider } from "@apollo/client";
+import { client } from '../apollo-client';
+import Error from "../components/Error";
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
 
@@ -16,10 +13,12 @@ import {loadStripe} from '@stripe/stripe-js';
 function MyApp({ Component, pageProps: { session, ...pageProps } }:any) {
 	return (
 		<SessionProvider session={session}>
-			
+			<ApolloProvider client={client}>
 				<ContextProvider>
+					<Error></Error>
 					<Component {...pageProps} />
 				</ContextProvider>
+			</ApolloProvider>
 			
 		</SessionProvider>
 	);

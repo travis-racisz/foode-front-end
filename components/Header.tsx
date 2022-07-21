@@ -18,9 +18,9 @@ export default function Header(){
 
             </div>
             <div className="header-links"> 
-                <Link href = "/signin"><a className="link">Sign In</a></Link>
+                <Link href = "/user/signin"><a className="link">Sign In</a></Link>
                 <div className="signup-circle"> 
-                    <Link href = "/signup"><a className="link-signup">Sign Up</a></Link>
+                    <Link href = "/user/signup"><a className="link-signup">Sign Up</a></Link>
                 </div>
             </div>
         </div>
