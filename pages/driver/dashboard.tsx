@@ -37,7 +37,7 @@ export default function Dashboard(){
 				// 	errorPolicy: "all"
 				// })
 
-				const {loading, data, error } = useQuery(query, {
+				const { loading, data, error } = useQuery(query, {
 					variables: {
 						token: token
 						}, 
@@ -89,9 +89,9 @@ export default function Dashboard(){
                     return (
                         <div className="completed-order" key={index}>
                             <div className="order-info">
-                                <div>order details: {order.orderDetails.map(orderItem => { 
+                                <div>order details: {order.orderDetails.map((orderItem, index: number) => { 
                                     return( 
-                                        <div><p>{orderItem.name}</p></div>
+                                        <div key = {index}><p>{orderItem.name}</p></div>
                                     )
                                 })}</div>
                                 <div>order total: {order.total}</div>

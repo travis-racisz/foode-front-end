@@ -28,7 +28,7 @@ export default function SignIn(){
             </div> 
     
     
-                <p>Don't have an account? Sign up <Link href="/driver/auth/signup" passHref>Here</Link></p>
+                <p>Don&apos;t have an account? Sign up <Link href="/driver/auth/signup" passHref>Here</Link></p>
         </div>
         )
 }
