@@ -4,7 +4,7 @@ import { client } from "../../apollo-client";
 import Menus from "../../components/restaurants/Menus";
 import { useContext, useEffect } from "react";
 import { CartContext } from "../../context/ContextProvider";
-import Cart from '../../components/cart/Cart'
+import Cart from "../../components/cart/Cart"
 import { IoMdArrowRoundBack } from "react-icons/io";
 export default function Restaurant({ data }:any) {
 	const router = useRouter();
