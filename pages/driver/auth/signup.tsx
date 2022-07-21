@@ -2,7 +2,7 @@ import Link from "next/link"
 import { useContext } from "react"
 import { CartContext } from "../../../context/ContextProvider"
 import { HiOutlineArrowSmLeft } from "react-icons/hi"
-export default function signup(){ 
+export default function SignUp(){ 
 
     const { setDriverRegistration, driverRegistration, signUpDriver, authError } = useContext(CartContext)
     function handleChange(e){ 

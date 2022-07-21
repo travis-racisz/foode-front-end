@@ -3,7 +3,7 @@ import { useContext } from "react"
 import { CartContext } from "../../../context/ContextProvider"
 import { HiOutlineArrowSmLeft } from "react-icons/hi"
 
-export default function signIn(){ 
+export default function SignIn(){ 
     const { setDriverRegistration, driverRegistration, signInDriver, authError } = useContext(CartContext)
     function handleChange(e){ 
         const {name, value} = e.target

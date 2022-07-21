@@ -8,17 +8,17 @@ export default function Dashboard(){
     if(typeof window !== "undefined"){
         const token = localStorage.getItem('token')
 
-            const orderQuery = gql` 
-			query getDriversCompletedOrders($id: String!) {
-				getDriversCompletedOrders(id: $id) {
-					total
-					orderDetails{ 
-						name
-						price
-					}
-				}
-			}
-		`
+        //     const orderQuery = gql` 
+		// 	query getDriversCompletedOrders($id: String!) {
+		// 		getDriversCompletedOrders(id: $id) {
+		// 			total
+		// 			orderDetails{ 
+		// 				name
+		// 				price
+		// 			}
+		// 		}
+		// 	}
+		// `
 		const query = gql`
 			query getDriverProfile($token: String!) {
 				getDriverProfile(token: $token) {
@@ -44,16 +44,16 @@ export default function Dashboard(){
 						errorPolicy: "none", 
                         
 					})
-                const ordersQuery = useQuery(orderQuery,{
+                // const ordersQuery = useQuery(orderQuery,{
                     
-                    variables: {
-                        id: data?.getDriverProfile.id, 
-                }
+                //     variables: {
+                //         id: data?.getDriverProfile.id, 
+                // }
                     
-                })
-                if(ordersQuery.data){ 
-                    setCompletedOrders(ordersQuery?.data.getDriversCompletedOrders)
-                }
+                // })
+                // if(ordersQuery.data){ 
+                //     setCompletedOrders(ordersQuery?.data.getDriversCompletedOrders)
+                // }
                 if(data){ 
                     setDriverDetails(data.getDriverProfile)
                 }

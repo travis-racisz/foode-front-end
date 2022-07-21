@@ -8,8 +8,8 @@ export default function UserOnboarding(){
     return( 
         <div className='name-form-container'>
             <div className='name-form'> 
-                <h1>Lets gather some information</h1>
-                <h3>What's your name?</h3>
+                <h1>Let&apos;s gather some information</h1>
+                <h3>What&apos;s your name?</h3>
                 <input className='name-input' type="text" placeholder="First Name"/>
                 <input className='name-input' type="text" placeholder="Last Name"/>
                 <div className='phone-input-container'> 
