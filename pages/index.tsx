@@ -6,7 +6,7 @@ import { IoIosRestaurant } from 'react-icons/io'
 import { MdFastfood } from 'react-icons/md'
 import Header from "../components/Header";
 import { useSession } from "next-auth/react";
-import Cart from "../components/cart/Cart";
+import Cart from "../components/Cart/Cart";
 
 
 export default function Home() {

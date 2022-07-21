@@ -16,8 +16,8 @@ export default function Cart() {
 
 		const cartOptionsArr: Array<number> = [];
 
-		if (context.cart.length > 0) {
-			context.cart.forEach((cartItem: Record<string, any>) => {
+		if (context?.cart.length > 0) {
+			context?.cart.forEach((cartItem: Record<string, any>) => {
 				if (cartItem.options) {
 					cartItem.options.reduce((prev: number, curr: Record<string, number>) => {
 						cartOptionsArr.push(curr.value);
@@ -32,17 +32,17 @@ export default function Cart() {
 			return;
 		}
 
-		context.setTotal(0);
+		context?.setTotal(0);
 		setOptionsTotal(0);
-	}, [context.cart, context]);
+	}, [context?.cart, context]);
 
 	useEffect(() => {
 		const reducedCart = context?.cart.reduce(
 			(previous: number, current: Record<string, number>) => previous + current.price,
 			0
 		);
-		context.setTotal(reducedCart + optionsTotal);
-	}, [context.cart, optionsTotal, context]);
+		context?.setTotal(reducedCart + optionsTotal);
+	}, [context?.cart, optionsTotal, context]);
 	return (
 		<div className="cart-sticky">
 			<div onClick={() => setShowCart((prev) => !prev)}>
@@ -50,7 +50,7 @@ export default function Cart() {
 			</div>
 			
 				<div className={showCart ? "show-modal" : "no-display"}>
-					{context.cart.map((item: Record<string, any>, index: number) => {
+					{context?.cart.map((item: Record<string, any>, index: number) => {
 						return (
 							<div
 								className="cart-item"
@@ -87,10 +87,10 @@ export default function Cart() {
 							</div>
 						);
 					})}
-					<h1>Total: ${(context.total / 100 ).toFixed(2)} </h1>
+					<h1>Total: ${(context?.total / 100 ).toFixed(2)} </h1>
 					<button className="cart-checkout-button" onClick={() =>{  
 						if(context.cart.length > 0){
-							context.addOrder(context.cart, context.total, context.restaurant.id)
+							context?.addOrder(context.cart, context.total, context.restaurant.id)
 						} else { 
 							alert("Cart is empty")
 						}

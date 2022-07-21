@@ -2,7 +2,7 @@ import { useEffect, useContext } from "react";
 import Link from "next/link";
 import { CartContext } from "../../context/ContextProvider";
 import { HiOutlineArrowSmLeft } from "react-icons/hi";
-import SignIn from "../../components/auth/signin";
+import SignIn from "../../components/auth/SignIn";
 export default function signin(){ 
     const context = useContext(CartContext);
 
