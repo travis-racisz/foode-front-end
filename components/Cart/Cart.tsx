@@ -16,8 +16,8 @@ export default function Cart() {
 
 		const cartOptionsArr: Array<number> = [];
 
-		if (context?.cart.length > 0) {
-			context?.cart.forEach((cartItem: Record<string, any>) => {
+		if (context.cart.length > 0) {
+			context.cart.forEach((cartItem: Record<string, any>) => {
 				if (cartItem.options) {
 					cartItem.options.reduce((prev: number, curr: Record<string, number>) => {
 						cartOptionsArr.push(curr.value);
@@ -32,9 +32,9 @@ export default function Cart() {
 			return;
 		}
 
-		context?.setTotal(0);
+		context.setTotal(0);
 		setOptionsTotal(0);
-	}, [context?.cart, context]);
+	}, [context.cart, context]);
 
 	useEffect(() => {
 		const reducedCart = context?.cart.reduce(
