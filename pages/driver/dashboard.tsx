@@ -4,9 +4,11 @@ import { gql, useQuery } from "@apollo/client"
 import { CartContext } from "../../context/ContextProvider";
 
 export default function Dashboard(){ 
+    let token;
     const { driverDetails, getDriverProfile, setCompletedOrders, completedOrders, getLoginLink, setDriverDetails } = useContext(CartContext);
     if(typeof window !== "undefined"){
-        const token = localStorage.getItem('token')
+        token = localStorage.getItem('token')
+    }
 
         //     const orderQuery = gql` 
 		// 	query getDriversCompletedOrders($id: String!) {
@@ -41,6 +43,7 @@ export default function Dashboard(){
 					variables: {
 						token: token
 						}, 
+                        skip: !token,
 						errorPolicy: "none", 
                         
 					})
@@ -78,7 +81,7 @@ export default function Dashboard(){
                     </div> )
                 }
                 
-    }
+    
 			
     return ( 
         <div>
