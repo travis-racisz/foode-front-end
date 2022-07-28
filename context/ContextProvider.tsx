@@ -15,7 +15,7 @@ import { getAuth,
 	browserLocalPersistence
  } from "firebase/auth";
 import { getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
-
+import Cookie from 'js-cookie'
 
 
 const facebookProvider = new FacebookAuthProvider();
@@ -82,6 +82,7 @@ interface CartContextInterface {
 	getDriverProfile: (token: string) => void,
 	completedOrders: Array<any>,
 	errorMessage: string,
+	updateUser: (user: Record<string, any>, data: Record<string, any>) => void,
 	setCompletedOrders: (completedOrders: Array<any>) => void,
 	setDriverDetails: (driverDetails: Record<string, any>) => void,
 	getLoginLink: (stripeAccount: string) => void, 
@@ -127,6 +128,9 @@ export function ContextProvider(props:any) {
 		localStorage.setItem("restaurantId", JSON.stringify(restaurant.id));
 	}, [restaurant])
 
+	useEffect(() => { 
+		Cookie.set('user', JSON.stringify(user))
+	}, [user])
 	async function createPaymentIntent(total:Number, orderId:String){ 
 		const createPaymentIntentMutation = gql` 
 			mutation createPaymentIntent($total: Float!, $orderId: String!){
@@ -153,21 +157,67 @@ export function ContextProvider(props:any) {
 		})
 	}
 
+	const updateUser = async (user: Record<string, any>, data: Record<string, any>) => {
+		console.log(user, data, "user, data");
+		// if(user.email == undefined){ 
+		// 	console.log('user is undefined');
+		// 	setErrorMessage('session expired please login again')
+		// 	return 
+		// }
+		// try{ 
+		// 	const userRef = doc(db, 'users', user.email);
+		// 	await updateDoc(userRef, data)
+		// 	router.push('/user/address')
+
+		// } catch(err){ 
+		// 	console.log(err)
+		// }
+
+
+
+	
+	}
+
 	async function signInWithFacebook(){ 
 		signInWithPopup(auth, facebookProvider)
-		.then((result) => {
+		.then(async (result) => {
 			console.log(result, "this is the result")
 			// The signed-in user info.
-			const user = result.user;
-
-			// This gives you a Facebook Access Token. You can use it to access the Facebook API.
-			const credential = FacebookAuthProvider.credentialFromResult(result);
-			const accessToken = credential.accessToken;
+			const user = result.user
 			setUser(user)
+
+			const addFacebookUser = gql` 
+				mutation addUser($email: String!){
+					addUser(email: $email){
+						id
+						email
+						firstName
+						lastName
+						phoneNumber
+						token
+					}
+				}
+			`
+
+			try{ 
+				const token = await client.mutate({ 
+					mutation: addFacebookUser,
+					variables: {
+						email: user.email
+					}
+				})
+				Cookie.set('token', token.data.addUser.token)
+			} catch(error){ 
+				console.log(error)
+			}
 			
 			// ...
 		})
 		.then(async () => { 
+			if(!user.completedRegistration){ 
+				router.push("/user/register")
+				return 
+			}
 			router.push("/profile/user")
 			const userRef = doc(db, 'users', user.email, );
 			
@@ -664,6 +714,7 @@ export function ContextProvider(props:any) {
 			value={{
 				// uploadImage,
 				user, 
+				updateUser,
 				clearError,
 				setDriverDetails,
 				errorMessage,

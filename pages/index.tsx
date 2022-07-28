@@ -16,30 +16,32 @@ export default function Home() {
 
 
 	return (
-		<div className={styles.container}>
+		<div className='flex flex-col w-screen overscroll-none'>
 			<Head>
 				<title>Foode</title>
 				<meta name="Foode" content="Be a foode" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Header />
-			<Link href = "/driver/auth/signup">
-				<div className="homepage-icon-container"> 
-					<Link href = "/driver/auth/signup" passHref><AiFillCar className = "restaurant-icon" /></Link>
-					<p>Sign up as Driver today!</p>
+			<div className = "flex flex-row items-center justify-center"> 
+				<Link href = "/driver/auth/signup">
+					<>
+						<Link href = "/driver/auth/signup" passHref><AiFillCar className = "restaurant-icon" /></Link>
+						<p className="text-4xl">Sign up as Driver today!</p>
+					
+					</>
 
-				</div>
-			</Link>
-			{/* <div className="homepage-icon-container"> 
-				<Link href = "/partners/signup" passHref><IoIosRestaurant className="restaurant-icon" /></Link>
-				<p>Become a Partner Today!</p>
-			</div> */}
-			<Link href = "/user/signup">
-			<div className="homepage-icon-container"> 
-				<Link href = "/signup" passHref><MdFastfood className="restaurant-icon" /></Link>
-				<p className="icon-text">Order online!</p>
+				</Link>
 			</div>
+			<div className = "flex flex-row items-center md:justify-center md:gap-40"> 
+				<Link href = "/user/signup">
+				<> 
+					<Link href = "/signup" passHref><MdFastfood className="restaurant-icon" /></Link>
+					<p className="text-4xl">Order online!</p>
+				</>
 			</Link>
+
+			</div>
 			
 
 			
