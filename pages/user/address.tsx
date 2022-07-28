@@ -6,7 +6,7 @@ import { gql, useMutation } from "@apollo/client";
 import { client } from "../../apollo-client";
 import { parseCookies } from "../../lib/parseCookies";
 
-export default function address({ token }){ 
+export default function Address({ token }){ 
     const { register, handleSubmit, formState: {errors}} = useForm<Address>()
     const updateUserMutation = gql`
         mutation updateUser($roomNumber: String, $buildingNumber:String, $specialInstructions: String, $completedRegistration: Boolean $token: String){
