@@ -9,7 +9,7 @@ export default function NewOrder({ data }) {
 	// get all restaurants and display them here, similar to seeing all restaurants on other component
 	return (
 		<div className="restaurant-list">
-			<Cart />
+			{/* <Cart /> */}
 			{data.resturaunts.map((resturaunt:Record<string,any>) => {
 				return (
 					<div key={resturaunt.id}>

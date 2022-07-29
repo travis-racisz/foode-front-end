@@ -21,8 +21,8 @@ export default function Restaurant({ data }:any) {
 				<IoMdArrowRoundBack className="back-arrow" onClick={() => router.back()} />
 			</div>
 
-				<Cart />
-			<h1 className="restaurant-name">{data.resturaunt[0].name}</h1>
+				{/* <Cart /> */}
+			<h1 className="text-slate-900 text-4xl text-center">{data.resturaunt[0].name}</h1>
 			<h3 className="menus-h3">Menus</h3>
 			<div>
 				{data.resturaunt[0].menu.map((menu:any, index:number) => {

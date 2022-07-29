@@ -35,17 +35,16 @@ export default function Address({ token }){
                 token: token
             }
         })
-        if(data){ 
-            router.push('/profile/user')
-            return data
-        }
-
-        if(error){ 
-            console.log(error.message)
-            return error.message
-        }
+    }
+    if(data){ 
+        router.push('/profile/user')
     }
 
+    if(error){ 
+        console.log(error.message)
+        return error.message
+    
+    }
     if(loading){ 
         return ( 
             <div> 
@@ -53,6 +52,7 @@ export default function Address({ token }){
             </div>
         )
     }
+
 
     return ( 
         <div className="flex flex-col justify-center items-center w-screen h-80h ">

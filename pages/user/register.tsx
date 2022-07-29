@@ -24,7 +24,8 @@ export default function Register({ token }) {
 
 
     const formSubmit:SubmitHandler<Inputs> = async (inputs)=> {
-        await updateUser({
+        console.log('fired')
+        updateUser({
             variables: {
                 phoneNumber: inputs.phoneNumber,
                 firstName: inputs.firstName,
@@ -34,14 +35,11 @@ export default function Register({ token }) {
 
            
 
-            if(data){ 
-                router.push('/user/address')
-                return data
-            }
-        // take the data and update the user in firebase 
-        
+        }
+    if(data){ 
+        router.push('/user/address')
     }
-
+    
     if(loading){ 
         return ( 
             <div> 
@@ -57,6 +55,7 @@ export default function Register({ token }) {
             </div>
         )
     }
+
     return ( 
         <div className="container flex flex-col place-content-center w-screen items-center h-80h"> 
             <form onSubmit={handleSubmit(formSubmit)} className= "container h-96 flex flex-col w-80 rounded-lg bg-red lg: w-96 ">
@@ -81,7 +80,7 @@ export default function Register({ token }) {
                         message: "Phone number must be 10 digits"
                 }})}></input>
                 {errors.phoneNumber && <p className="text-white bold text-base self-center">{errors.phoneNumber.message}</p>}
-                <input className="rounded bg-white text-black m-10 w-40 self-center" type = "submit" value = "next"></input>
+                <input className="rounded bg-white text-black m-10 w-40 self-center disabled:bg-blue" type = "submit" value = "next" disabled = {loading}></input>
                 </form>
         </div>
     )

@@ -5,9 +5,9 @@ export default function Menus(props) {
 	const { data, index } = props;
 
 	return (
-		<div className = "menu-container" key={index}>
-			<div>
-				<h4 className="menu-name">{data.name}</h4>
+		<div className = "container flex flex-col items-center justify-center" key={index}>
+			<div className="">
+				<h4 className="text-slate-900 text-2xl text-center">{data.name}</h4>
 				<>
 					<div>
 						{data.MenuItems.map((menuItem:Record<string, any>, index:number) => {

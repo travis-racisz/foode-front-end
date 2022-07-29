@@ -20,7 +20,6 @@ export default function MenuItems(props:any) {
 		options: Array<any>,
 	}
 	useEffect(() => {
-		console.log(menuItemState, "menuItemState");
 		if (options) {
 			setMenuItemState({ ...menuItem, options: options });
 		}
@@ -29,14 +28,14 @@ export default function MenuItems(props:any) {
 	return (
 		<div
 			key={index}
-			className= "menu-item-container"
+			className= "container"
 		>
 			<div
 				
-				className="menu-item"
+				className="w-80 border border-black mb-3 rounded flex flex-col items-center justify-center"
 			>
 				<p>{menuItem.name}</p>
-				<p>{menuItem.description}</p>
+				<p className="p-3">{menuItem.description}</p>
 				<p>${(menuItem.price / 100).toFixed(2)}</p>
 
 				<div>
